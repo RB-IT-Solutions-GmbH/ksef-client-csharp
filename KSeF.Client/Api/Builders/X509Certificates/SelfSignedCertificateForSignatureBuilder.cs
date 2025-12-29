@@ -96,7 +96,7 @@ public interface ISelfSignedCertificateForSignatureBuilderReady
 }
 
 /// <inheritdoc />
-internal sealed class SelfSignedCertificateForSignatureBuilderImpl
+public sealed class SelfSignedCertificateForSignatureBuilderImpl
     : ISelfSignedCertificateForSignatureBuilder
     , ISelfSignedCertificateForSignatureBuilderWithName
     , ISelfSignedCertificateForSignatureBuilderWithSurname
