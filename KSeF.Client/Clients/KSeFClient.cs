@@ -39,7 +39,7 @@ public class KSeFClient(IRestClient restClient) : IKSeFClient
 
         StringBuilder urlBuilder = new();
 
-        urlBuilder.Append("/v2/auth/sessions");
+        urlBuilder.Append("/api/v2/auth/sessions");
 
         PaginationHelper.AppendPagination(null, pageSize, urlBuilder);
 
@@ -57,7 +57,7 @@ public class KSeFClient(IRestClient restClient) : IKSeFClient
         ArgumentException.ThrowIfNullOrWhiteSpace(token);
 
         await restClient.SendAsync(HttpMethod.Delete,
-                                   "/v2/auth/sessions/current",
+                                   "/api/v2/auth/sessions/current",
                                    token,
                                    RestClient.DefaultContentType,
                                    cancellationToken).ConfigureAwait(false);
@@ -70,7 +70,7 @@ public class KSeFClient(IRestClient restClient) : IKSeFClient
         ArgumentException.ThrowIfNullOrWhiteSpace(accessToken);
 
         await restClient.SendAsync(HttpMethod.Delete,
-                                   $"/v2/auth/sessions/{Uri.EscapeDataString(sessionReferenceNumber)}",
+                                   $"/api/v2/auth/sessions/{Uri.EscapeDataString(sessionReferenceNumber)}",
                                    accessToken,
                                    RestClient.DefaultContentType,
                                    cancellationToken).ConfigureAwait(false);
@@ -80,7 +80,7 @@ public class KSeFClient(IRestClient restClient) : IKSeFClient
     public async Task<AuthenticationChallengeResponse> GetAuthChallengeAsync(CancellationToken cancellationToken = default)
     {
         return await restClient.SendAsync<AuthenticationChallengeResponse, string>(HttpMethod.Post,
-                                                                                       "/v2/auth/challenge",
+                                                                                       "/api/v2/auth/challenge",
                                                                                        default,
                                                                                        default,
                                                                                        RestClient.DefaultContentType,
@@ -92,7 +92,7 @@ public class KSeFClient(IRestClient restClient) : IKSeFClient
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(signedXML);
 
-        string url = $"/v2/auth/xades-signature?verifyCertificateChain={verifyCertificateChain.ToString().ToLower(CultureInfo.CurrentCulture)}";
+        string url = $"/api/v2/auth/xades-signature?verifyCertificateChain={verifyCertificateChain.ToString().ToLower(CultureInfo.CurrentCulture)}";
 
         return await restClient.SendAsync<SignatureResponse, string>(HttpMethod.Post,
                                                                      url,
@@ -108,7 +108,7 @@ public class KSeFClient(IRestClient restClient) : IKSeFClient
         ArgumentNullException.ThrowIfNull(requestPayload);
 
         return await restClient.SendAsync<SignatureResponse, AuthenticationKsefTokenRequest>(HttpMethod.Post,
-                                                                     "/v2/auth/ksef-token",
+                                                                     "/api/v2/auth/ksef-token",
                                                                      requestPayload,
                                                                      default,
                                                                      RestClient.DefaultContentType,
@@ -121,7 +121,7 @@ public class KSeFClient(IRestClient restClient) : IKSeFClient
         ArgumentException.ThrowIfNullOrWhiteSpace(authenticationToken);
 
         return await restClient.SendAsync<AuthStatus, string>(HttpMethod.Get,
-                                                                   $"/v2/auth/{Uri.EscapeDataString(authOperationReferenceNumber)}",
+                                                                   $"/api/v2/auth/{Uri.EscapeDataString(authOperationReferenceNumber)}",
                                                                    default,
                                                                    authenticationToken,
                                                                    RestClient.DefaultContentType,
@@ -134,7 +134,7 @@ public class KSeFClient(IRestClient restClient) : IKSeFClient
         ArgumentException.ThrowIfNullOrWhiteSpace(authenticationToken);
 
         return await restClient.SendAsync<AuthenticationOperationStatusResponse, string>(HttpMethod.Post,
-                                                                               $"/v2/auth/token/redeem",
+                                                                               $"/api/v2/auth/token/redeem",
                                                                                default,
                                                                                authenticationToken,
                                                                                RestClient.DefaultContentType,
@@ -147,7 +147,7 @@ public class KSeFClient(IRestClient restClient) : IKSeFClient
         ArgumentException.ThrowIfNullOrWhiteSpace(refreshToken);
 
         return await restClient.SendAsync<RefreshTokenResponse, string>(HttpMethod.Post,
-                                                                        $"/v2/auth/token/refresh",
+                                                                        $"/api/v2/auth/token/refresh",
                                                                         default,
                                                                         refreshToken,
                                                                         RestClient.DefaultContentType,
@@ -161,7 +161,7 @@ public class KSeFClient(IRestClient restClient) : IKSeFClient
         ArgumentException.ThrowIfNullOrWhiteSpace(accessToken);
 
         return await restClient.SendAsync<OpenOnlineSessionResponse, OpenOnlineSessionRequest>(HttpMethod.Post,
-                                                                                               "/v2/sessions/online",
+                                                                                               "/api/v2/sessions/online",
                                                                                                requestPayload,
                                                                                                accessToken,
                                                                                                RestClient.DefaultContentType,                                                                                               
@@ -178,7 +178,7 @@ public class KSeFClient(IRestClient restClient) : IKSeFClient
         ArgumentException.ThrowIfNullOrWhiteSpace(accessToken);
 
         return await restClient.SendAsync<SendInvoiceResponse, SendInvoiceRequest>(HttpMethod.Post,
-                                                                                    $"/v2/sessions/online/{Uri.EscapeDataString(sessionReferenceNumber)}/invoices",
+                                                                                    $"/api/v2/sessions/online/{Uri.EscapeDataString(sessionReferenceNumber)}/invoices",
                                                                                     requestPayload,
                                                                                     accessToken,
                                                                                     RestClient.DefaultContentType,
@@ -192,7 +192,7 @@ public class KSeFClient(IRestClient restClient) : IKSeFClient
         ArgumentException.ThrowIfNullOrWhiteSpace(accessToken);
 
         await restClient.SendAsync(HttpMethod.Post,
-                                   $"/v2/sessions/online/{sessionReferenceNumber}/close",
+                                   $"/api/v2/sessions/online/{sessionReferenceNumber}/close",
                                    accessToken,
                                    RestClient.DefaultContentType,
                                    cancellationToken).ConfigureAwait(false);
@@ -205,7 +205,7 @@ public class KSeFClient(IRestClient restClient) : IKSeFClient
         ArgumentException.ThrowIfNullOrWhiteSpace(accessToken);
 
         return await restClient.SendAsync<OpenBatchSessionResponse, OpenBatchSessionRequest>(HttpMethod.Post, 
-                                                                                             "/v2/sessions/batch", 
+                                                                                             "/api/v2/sessions/batch", 
                                                                                              requestPayload, 
                                                                                              accessToken, 
                                                                                              RestClient.DefaultContentType,                                                                                             
@@ -222,7 +222,7 @@ public class KSeFClient(IRestClient restClient) : IKSeFClient
         ArgumentException.ThrowIfNullOrWhiteSpace(accessToken);
 
         await restClient.SendAsync<object>(HttpMethod.Post,
-                                           $"/v2/sessions/batch/{Uri.EscapeDataString(batchSessionReferenceNumber)}/close",
+                                           $"/api/v2/sessions/batch/{Uri.EscapeDataString(batchSessionReferenceNumber)}/close",
                                            default, accessToken, RestClient.DefaultContentType, cancellationToken).ConfigureAwait(false);
     }
     /// <inheritdoc />
@@ -232,7 +232,7 @@ public class KSeFClient(IRestClient restClient) : IKSeFClient
 
         StringBuilder urlBuilder = new();
 
-        urlBuilder.Append(CultureInfo.InvariantCulture, $"/v2/sessions?sessionType={sessionType}");
+        urlBuilder.Append(CultureInfo.InvariantCulture, $"/api/v2/sessions?sessionType={sessionType}");
 
         // use helper
         PaginationHelper.AppendPagination(null, pageSize, urlBuilder);
@@ -261,7 +261,7 @@ public class KSeFClient(IRestClient restClient) : IKSeFClient
         ArgumentException.ThrowIfNullOrWhiteSpace(accessToken);
 
         return await restClient.SendAsync<SessionStatusResponse, object>(HttpMethod.Get,
-                                                                              $"/v2/sessions/{Uri.EscapeDataString(sessionReferenceNumber)}",
+                                                                              $"/api/v2/sessions/{Uri.EscapeDataString(sessionReferenceNumber)}",
                                                                               default,
                                                                               accessToken,
                                                                               RestClient.DefaultContentType,
@@ -276,7 +276,7 @@ public class KSeFClient(IRestClient restClient) : IKSeFClient
 
         StringBuilder urlBuilder = new();
 
-        urlBuilder.Append("/v2/sessions/");
+        urlBuilder.Append("/api/v2/sessions/");
         urlBuilder.Append(Uri.EscapeDataString(sessionReferenceNumber));
         urlBuilder.Append("/invoices");
 
@@ -299,7 +299,7 @@ public class KSeFClient(IRestClient restClient) : IKSeFClient
         ArgumentException.ThrowIfNullOrWhiteSpace(accessToken);
 
         StringBuilder urlBuilder = new();
-        urlBuilder.Append("/v2/sessions/");
+        urlBuilder.Append("/api/v2/sessions/");
         urlBuilder.Append(Uri.EscapeDataString(sessionReferenceNumber));
         urlBuilder.Append("/invoices/");
         urlBuilder.Append(Uri.EscapeDataString(invoiceReferenceNumber));
@@ -317,7 +317,7 @@ public class KSeFClient(IRestClient restClient) : IKSeFClient
 
         StringBuilder urlBuilder = new();
 
-        urlBuilder.Append("/v2/sessions/");
+        urlBuilder.Append("/api/v2/sessions/");
         urlBuilder.Append(Uri.EscapeDataString(sessionReferenceNumber));
         urlBuilder.Append("/invoices/failed");
 
@@ -341,7 +341,7 @@ public class KSeFClient(IRestClient restClient) : IKSeFClient
 
         StringBuilder urlBuilder = new();
 
-        urlBuilder.Append("/v2/sessions/");
+        urlBuilder.Append("/api/v2/sessions/");
         urlBuilder.Append(Uri.EscapeDataString(sessionReferenceNumber));
         urlBuilder.Append("/invoices/ksef/");
         urlBuilder.Append(Uri.EscapeDataString(ksefNumber));
@@ -362,7 +362,7 @@ public class KSeFClient(IRestClient restClient) : IKSeFClient
 
         StringBuilder urlBuilder = new();
 
-        urlBuilder.Append("/v2/sessions/");
+        urlBuilder.Append("/api/v2/sessions/");
         urlBuilder.Append(Uri.EscapeDataString(sessionReferenceNumber));
         urlBuilder.Append("/invoices/");
         urlBuilder.Append(Uri.EscapeDataString(invoiceReferenceNumber));
@@ -381,7 +381,7 @@ public class KSeFClient(IRestClient restClient) : IKSeFClient
         ArgumentException.ThrowIfNullOrWhiteSpace(accessToken);
 
         StringBuilder urlBuilder = new();
-        urlBuilder.Append("/v2/sessions/");
+        urlBuilder.Append("/api/v2/sessions/");
         urlBuilder.Append(Uri.EscapeDataString(sessionReferenceNumber));
         urlBuilder.Append("/upo/");
         urlBuilder.Append(Uri.EscapeDataString(upoReferenceNumber));
@@ -398,7 +398,7 @@ public class KSeFClient(IRestClient restClient) : IKSeFClient
         ArgumentException.ThrowIfNullOrWhiteSpace(accessToken);
 
         StringBuilder urlBuilder = new();
-        urlBuilder.Append("/v2/invoices/ksef/");
+        urlBuilder.Append("/api/v2/invoices/ksef/");
         urlBuilder.Append(Uri.EscapeDataString(ksefNumber));
 
         string url = urlBuilder.ToString();
@@ -412,7 +412,7 @@ public class KSeFClient(IRestClient restClient) : IKSeFClient
         ArgumentNullException.ThrowIfNull(requestPayload);
         ArgumentException.ThrowIfNullOrWhiteSpace(accessToken);
 
-        StringBuilder urlBuilder = new($"/v2/invoices/query/metadata?sortOrder={sortOrder}");
+        StringBuilder urlBuilder = new($"/api/v2/invoices/query/metadata?sortOrder={sortOrder}");
 
         PaginationHelper.AppendPagination(pageOffset, pageSize, urlBuilder);
 
@@ -433,7 +433,7 @@ public class KSeFClient(IRestClient restClient) : IKSeFClient
 
         StringBuilder urlBuilder = new();
 
-        urlBuilder.Append("/v2/permissions/operations/");
+        urlBuilder.Append("/api/v2/permissions/operations/");
         urlBuilder.Append(Uri.EscapeDataString(operationReferenceNumber));
 
         return await restClient.SendAsync<PermissionsOperationStatusResponse, string>(HttpMethod.Get,
@@ -451,7 +451,7 @@ public class KSeFClient(IRestClient restClient) : IKSeFClient
         ArgumentException.ThrowIfNullOrWhiteSpace(accessToken);
 
         return await restClient.SendAsync<OperationResponse, string>(HttpMethod.Delete,
-                                                             $"/v2/permissions/common/grants/{Uri.EscapeDataString(permissionId)}",
+                                                             $"/api/v2/permissions/common/grants/{Uri.EscapeDataString(permissionId)}",
                                                              default,
                                                              accessToken,
                                                              RestClient.DefaultContentType,
@@ -465,7 +465,7 @@ public class KSeFClient(IRestClient restClient) : IKSeFClient
         ArgumentException.ThrowIfNullOrWhiteSpace(accessToken);
 
         return await restClient.SendAsync<OperationResponse, string>(HttpMethod.Delete,
-                                                             $"/v2/permissions/authorizations/grants/{Uri.EscapeDataString(permissionId)}",
+                                                             $"/api/v2/permissions/authorizations/grants/{Uri.EscapeDataString(permissionId)}",
                                                              default,
                                                              accessToken,
                                                              RestClient.DefaultContentType,
@@ -478,7 +478,7 @@ public class KSeFClient(IRestClient restClient) : IKSeFClient
         ArgumentException.ThrowIfNullOrWhiteSpace(accessToken);
 
         return await restClient.SendAsync<PermissionsAttachmentAllowedResponse, string>(HttpMethod.Get,
-                                                             "/v2/permissions/attachments/status",
+                                                             "/api/v2/permissions/attachments/status",
                                                              default,
                                                              accessToken,
                                                              RestClient.DefaultContentType,
@@ -496,7 +496,7 @@ public class KSeFClient(IRestClient restClient) : IKSeFClient
         ArgumentNullException.ThrowIfNull(requestPayload);
         ArgumentException.ThrowIfNullOrWhiteSpace(accessToken);
 
-        StringBuilder urlBuilder = new("/v2/permissions/query/personal/grants");
+        StringBuilder urlBuilder = new("/api/v2/permissions/query/personal/grants");
 
         PaginationHelper.AppendPagination(pageOffset, pageSize, urlBuilder);
 
@@ -520,7 +520,7 @@ public class KSeFClient(IRestClient restClient) : IKSeFClient
         ArgumentNullException.ThrowIfNull(requestPayload);
         ArgumentException.ThrowIfNullOrWhiteSpace(accessToken);
 
-        StringBuilder urlBuilder = new("/v2/permissions/query/persons/grants");
+        StringBuilder urlBuilder = new("/api/v2/permissions/query/persons/grants");
 
         PaginationHelper.AppendPagination(pageOffset, pageSize, urlBuilder);
 
@@ -545,7 +545,7 @@ public class KSeFClient(IRestClient restClient) : IKSeFClient
         ArgumentNullException.ThrowIfNull(requestPayload);
         ArgumentException.ThrowIfNullOrWhiteSpace(accessToken);
 
-        StringBuilder urlBuilder = new("/v2/permissions/query/subunits/grants");
+        StringBuilder urlBuilder = new("/api/v2/permissions/query/subunits/grants");
 
         PaginationHelper.AppendPagination(pageOffset, pageSize, urlBuilder);
 
@@ -568,7 +568,7 @@ public class KSeFClient(IRestClient restClient) : IKSeFClient
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(accessToken);
 
-        StringBuilder urlBuilder = new("/v2/permissions/query/entities/roles");
+        StringBuilder urlBuilder = new("/api/v2/permissions/query/entities/roles");
 
         PaginationHelper.AppendPagination(pageOffset, pageSize, urlBuilder);
 
@@ -593,7 +593,7 @@ public class KSeFClient(IRestClient restClient) : IKSeFClient
         ArgumentNullException.ThrowIfNull(requestPayload);
         ArgumentException.ThrowIfNullOrWhiteSpace(accessToken);
 
-        StringBuilder urlBuilder = new("/v2/permissions/query/subordinate-entities/roles");
+        StringBuilder urlBuilder = new("/api/v2/permissions/query/subordinate-entities/roles");
 
         PaginationHelper.AppendPagination(pageOffset, pageSize, urlBuilder);
 
@@ -618,7 +618,7 @@ public class KSeFClient(IRestClient restClient) : IKSeFClient
         ArgumentNullException.ThrowIfNull(requestPayload);
         ArgumentException.ThrowIfNullOrWhiteSpace(accessToken);
 
-        StringBuilder urlBuilder = new("/v2/permissions/query/authorizations/grants");
+        StringBuilder urlBuilder = new("/api/v2/permissions/query/authorizations/grants");
 
         PaginationHelper.AppendPagination(pageOffset, pageSize, urlBuilder);
 
@@ -643,7 +643,7 @@ public class KSeFClient(IRestClient restClient) : IKSeFClient
         ArgumentNullException.ThrowIfNull(requestPayload);
         ArgumentException.ThrowIfNullOrWhiteSpace(accessToken);
 
-        StringBuilder urlBuilder = new("/v2/permissions/query/eu-entities/grants");
+        StringBuilder urlBuilder = new("/api/v2/permissions/query/eu-entities/grants");
 
         PaginationHelper.AppendPagination(pageOffset, pageSize, urlBuilder);
 
@@ -664,7 +664,7 @@ public class KSeFClient(IRestClient restClient) : IKSeFClient
         ArgumentException.ThrowIfNullOrWhiteSpace(accessToken);
 
         return await restClient.SendAsync<OperationResponse, GrantPermissionsPersonRequest>(HttpMethod.Post,
-                                                                                      "/v2/permissions/persons/grants",
+                                                                                      "/api/v2/permissions/persons/grants",
                                                                                       requestPayload,
                                                                                       accessToken,
                                                                                       RestClient.DefaultContentType,
@@ -679,7 +679,7 @@ public class KSeFClient(IRestClient restClient) : IKSeFClient
 
         return await restClient.SendAsync<OperationResponse,
             GrantPermissionsEntityRequest>(HttpMethod.Post,
-                                           "/v2/permissions/entities/grants",
+                                           "/api/v2/permissions/entities/grants",
                                            requestPayload,
                                            accessToken,
                                            RestClient.DefaultContentType,
@@ -693,7 +693,7 @@ public class KSeFClient(IRestClient restClient) : IKSeFClient
         ArgumentException.ThrowIfNullOrWhiteSpace(accessToken);
 
         return await restClient.SendAsync<OperationResponse, GrantPermissionsAuthorizationRequest>(HttpMethod.Post,
-                                 "/v2/permissions/authorizations/grants",
+                                 "/api/v2/permissions/authorizations/grants",
                                  requestPayload,
                                  accessToken,
                                  RestClient.DefaultContentType,
@@ -708,7 +708,7 @@ public class KSeFClient(IRestClient restClient) : IKSeFClient
         ArgumentException.ThrowIfNullOrWhiteSpace(accessToken);
 
         return await restClient.SendAsync<OperationResponse, GrantPermissionsIndirectEntityRequest>(HttpMethod.Post,
-                                                                                       "/v2/permissions/indirect/grants",
+                                                                                       "/api/v2/permissions/indirect/grants",
                                                                                        requestPayload,
                                                                                        accessToken,
                                                                                        RestClient.DefaultContentType,
@@ -725,7 +725,7 @@ public class KSeFClient(IRestClient restClient) : IKSeFClient
 
         return await restClient.SendAsync<OperationResponse,
             GrantPermissionsSubunitRequest>(HttpMethod.Post,
-                                           "/v2/permissions/subunits/grants",
+                                           "/api/v2/permissions/subunits/grants",
                                            requestPayload,
                                            accessToken,
                                            RestClient.DefaultContentType,
@@ -740,7 +740,7 @@ public class KSeFClient(IRestClient restClient) : IKSeFClient
         ArgumentException.ThrowIfNullOrWhiteSpace(accessToken);
 
         return await restClient.SendAsync<OperationResponse, GrantPermissionsEuEntityRequest>(
-            HttpMethod.Post, "/v2/permissions/eu-entities/administration/grants", requestPayload, accessToken, RestClient.DefaultContentType, cancellationToken
+            HttpMethod.Post, "/api/v2/permissions/eu-entities/administration/grants", requestPayload, accessToken, RestClient.DefaultContentType, cancellationToken
         ).ConfigureAwait(false);
     }
 
@@ -752,7 +752,7 @@ public class KSeFClient(IRestClient restClient) : IKSeFClient
         ArgumentException.ThrowIfNullOrWhiteSpace(accessToken);
 
         return await restClient.SendAsync<OperationResponse, GrantPermissionsEuEntityRepresentativeRequest>(
-            HttpMethod.Post, "/v2/permissions/eu-entities/grants", requestPayload, accessToken, RestClient.DefaultContentType, cancellationToken
+            HttpMethod.Post, "/api/v2/permissions/eu-entities/grants", requestPayload, accessToken, RestClient.DefaultContentType, cancellationToken
         ).ConfigureAwait(false);
     }
 
@@ -761,7 +761,7 @@ public class KSeFClient(IRestClient restClient) : IKSeFClient
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(accessToken);
 
-        return await restClient.SendAsync<CertificateLimitResponse, object>(HttpMethod.Get, "/v2/certificates/limits", default, accessToken, RestClient.DefaultContentType, cancellationToken).ConfigureAwait(false);
+        return await restClient.SendAsync<CertificateLimitResponse, object>(HttpMethod.Get, "/api/v2/certificates/limits", default, accessToken, RestClient.DefaultContentType, cancellationToken).ConfigureAwait(false);
     }
 
     /// <inheritdoc />
@@ -770,7 +770,7 @@ public class KSeFClient(IRestClient restClient) : IKSeFClient
         ArgumentException.ThrowIfNullOrWhiteSpace(accessToken);
 
         return await restClient.SendAsync<CertificateEnrollmentsInfoResponse, object>(HttpMethod.Get,
-                                                                                      "/v2/certificates/enrollments/data",
+                                                                                      "/api/v2/certificates/enrollments/data",
                                                                                       default,
                                                                                       accessToken,
                                                                                       RestClient.DefaultContentType,
@@ -784,7 +784,7 @@ public class KSeFClient(IRestClient restClient) : IKSeFClient
         ArgumentException.ThrowIfNullOrWhiteSpace(accessToken);
 
         return await restClient.SendAsync<CertificateEnrollmentResponse, SendCertificateEnrollmentRequest>(HttpMethod.Post,
-                                                                                                           "/v2/certificates/enrollments",
+                                                                                                           "/api/v2/certificates/enrollments",
                                                                                                            requestPayload,
                                                                                                            accessToken,
                                                                                                            RestClient.DefaultContentType,
@@ -799,7 +799,7 @@ public class KSeFClient(IRestClient restClient) : IKSeFClient
         ArgumentException.ThrowIfNullOrWhiteSpace(accessToken);
 
         return await restClient.SendAsync<CertificateEnrollmentStatusResponse, string>(HttpMethod.Get,
-                                                                                       $"/v2/certificates/enrollments/{Uri.EscapeDataString(certificateRequestReferenceNumber)}",
+                                                                                       $"/api/v2/certificates/enrollments/{Uri.EscapeDataString(certificateRequestReferenceNumber)}",
                                                                                        default, accessToken,
                                                                                        RestClient.DefaultContentType,
                                                                                        cancellationToken).ConfigureAwait(false);
@@ -813,7 +813,7 @@ public class KSeFClient(IRestClient restClient) : IKSeFClient
         ArgumentException.ThrowIfNullOrWhiteSpace(accessToken);
 
         return await restClient.SendAsync<CertificateListResponse, CertificateListRequest>(HttpMethod.Post,
-                                                                                           $"/v2/certificates/retrieve",
+                                                                                           $"/api/v2/certificates/retrieve",
                                                                                            requestPayload, accessToken,
                                                                                            RestClient.DefaultContentType,
                                                                                            cancellationToken).ConfigureAwait(false);
@@ -827,7 +827,7 @@ public class KSeFClient(IRestClient restClient) : IKSeFClient
         ArgumentException.ThrowIfNullOrWhiteSpace(serialNumber);
 
         await restClient.SendAsync(HttpMethod.Post,
-                                   $"/v2/certificates/{Uri.EscapeDataString(serialNumber)}/revoke",
+                                   $"/api/v2/certificates/{Uri.EscapeDataString(serialNumber)}/revoke",
                                    requestPayload,
                                    accessToken,
                                    RestClient.DefaultContentType,
@@ -844,7 +844,7 @@ public class KSeFClient(IRestClient restClient) : IKSeFClient
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(accessToken);
 
-        StringBuilder urlBuilder = new("/v2/certificates/query");
+        StringBuilder urlBuilder = new("/api/v2/certificates/query");
 
         PaginationHelper.AppendPagination(pageOffset, pageSize, urlBuilder);
 
@@ -865,7 +865,7 @@ public class KSeFClient(IRestClient restClient) : IKSeFClient
         ArgumentException.ThrowIfNullOrWhiteSpace(accessToken);
 
         return await restClient.SendAsync<KsefTokenResponse, KsefTokenRequest>(HttpMethod.Post,
-                                                                               "/v2/tokens",
+                                                                               "/api/v2/tokens",
                                                                                requestPayload,
                                                                                accessToken,
                                                                                RestClient.DefaultContentType,
@@ -883,7 +883,7 @@ public class KSeFClient(IRestClient restClient) : IKSeFClient
     int? pageSize = 10,
     CancellationToken cancellationToken = default)
     {
-        StringBuilder urlBuilder = new("/v2/tokens?");
+        StringBuilder urlBuilder = new("/api/v2/tokens?");
 
         if (statuses != null && statuses.Count > 0)
         {
@@ -932,7 +932,7 @@ public class KSeFClient(IRestClient restClient) : IKSeFClient
         ArgumentException.ThrowIfNullOrWhiteSpace(accessToken);
 
         return await restClient.SendAsync<AuthenticationKsefToken, string>(HttpMethod.Get,
-                                                                            $"/v2/tokens/{Uri.EscapeDataString(tokenReferenceNumber)}",
+                                                                            $"/api/v2/tokens/{Uri.EscapeDataString(tokenReferenceNumber)}",
                                                                             default,
                                                                             accessToken,
                                                                             RestClient.DefaultContentType,
@@ -946,7 +946,7 @@ public class KSeFClient(IRestClient restClient) : IKSeFClient
         ArgumentException.ThrowIfNullOrWhiteSpace(accessToken);
 
         await restClient.SendAsync(HttpMethod.Delete,
-                                   $"/v2/tokens/{Uri.EscapeDataString(tokenReferenceNumber)}",
+                                   $"/api/v2/tokens/{Uri.EscapeDataString(tokenReferenceNumber)}",
                                    accessToken,
                                    RestClient.DefaultContentType,
                                    cancellationToken).ConfigureAwait(false);
@@ -959,7 +959,7 @@ public class KSeFClient(IRestClient restClient) : IKSeFClient
      int? pageSize = null,
      CancellationToken cancellationToken = default)
     {
-        StringBuilder urlBuilder = new("/v2/peppol/query");
+        StringBuilder urlBuilder = new("/api/v2/peppol/query");
 
         PaginationHelper.AppendPagination(pageOffset, pageSize, urlBuilder);
 
@@ -992,7 +992,7 @@ public class KSeFClient(IRestClient restClient) : IKSeFClient
         ArgumentNullException.ThrowIfNull(requestPayload);
         ArgumentException.ThrowIfNullOrWhiteSpace(accessToken);
 
-        StringBuilder urlBuilder = new("/v2/invoices/exports");
+        StringBuilder urlBuilder = new("/api/v2/invoices/exports");
 
         Dictionary<string, string> headers = null;
 
@@ -1016,7 +1016,7 @@ public class KSeFClient(IRestClient restClient) : IKSeFClient
         ArgumentException.ThrowIfNullOrWhiteSpace(referenceNumber);
         ArgumentException.ThrowIfNullOrWhiteSpace(accessToken);
 
-        string url = $"/v2/invoices/exports/{Uri.EscapeDataString(referenceNumber)}";
+        string url = $"/api/v2/invoices/exports/{Uri.EscapeDataString(referenceNumber)}";
 
         return await restClient.SendAsync<InvoiceExportStatusResponse, object>(
             HttpMethod.Get,
